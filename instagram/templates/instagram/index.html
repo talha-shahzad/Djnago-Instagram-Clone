@@ -1,0 +1,45 @@
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'instagram/CSS/index.css' %}">
+    <title>My Website</title>
+</head>
+<body>
+
+<div class="main">
+    <div class='image-holder'>
+        <img src="{% static 'instagram/images/login1.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login2.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login3.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login4.png' %}" class="fade-in">
+    </div>
+    <div class='login-form'>
+        <div class='form-heading'>
+        <div>
+    </div>
+</div>
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll(".fade-in");
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images.forEach(image => image.classList.remove("visible"));
+            images[currentIndex].classList.add("visible");
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Show the next image every 2 seconds
+        setInterval(showNextImage, 2000);
+
+        // Start with the first image visible
+        showNextImage();
+    });
+</script>
+
+    
+</body>
+</html>
