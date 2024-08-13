@@ -112,16 +112,16 @@ USE_I18N = True
 
 USE_TZ = True
 
-import os
-# Base directory of your project
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# import os
+# # Base directory of your project
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# URL to use when referring to static files located in STATIC_ROOT
-STATIC_URL = '/static/'
+# # URL to use when referring to static files located in STATIC_ROOT
+# STATIC_URL = '/static/'
 
-# Directory where static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+# # Directory where static files will be collected
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# # Default primary key field type
+# # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
