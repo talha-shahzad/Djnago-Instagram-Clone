@@ -1,0 +1,14 @@
+{% load static %}
+<div class='sidepanel'>
+    <div class='logo-image'>
+        <img src="{% static 'instagram/Images/heading-img.png' %}">
+    </div>
+    <div class='link-holder'>
+        <ul class='links'>
+            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home </a></li>
+            <li><a href="{% url 'search' %}"><i class="fas fa-search"></i> Search </a></li>
+            <li><a href="#"><i class="fas fa-plus-square"></i> Create </a></li>
+            <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile </a></li>
+        </ul>
+    </div>
+</div>

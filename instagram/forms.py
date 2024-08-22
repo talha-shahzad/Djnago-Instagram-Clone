@@ -74,3 +74,11 @@ class SignupForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['profile_pic', 'bio', 'gender']
+
+    bio = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'cols': 20}))
+    gender = forms.ChoiceField(choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
