@@ -1,0 +1,63 @@
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'instagram/CSS/login.css' %}">
+    <title>My Website</title>
+</head>
+<body>
+
+<div class="main">
+    <div class='image-holder'>
+        <img src="{% static 'instagram/images/login1.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login2.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login3.png' %}" class="fade-in">
+        <img src="{% static 'instagram/images/login4.png' %}" class="fade-in">
+    </div>
+    <div class='container'>
+        <div class='login'>
+            <h1>Instagram</h1>
+            {% if error %}
+            <p class="error-message" style='color:Red;'>{{ error }}</p>
+            {% endif %}
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Login" class="sub-btn">
+</form>
+
+            
+            <p style='text-align:center;'>OR</p>
+            <a href='#' class='fp-link'>Forgot password</a>
+        </div>
+        <div class='signup'>
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+        </div>
+    </div>
+</div>
+ <script>
+    
+    document.addEventListener("DOMContentLoaded", function() {  
+        const images = document.querySelectorAll(".fade-in");
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images.forEach(image => image.classList.remove("visible"));
+            images[currentIndex].classList.add("visible");
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Show the next image every 2 seconds
+        setInterval(showNextImage, 2000);
+
+        // Start with the first image visible
+        showNextImage();
+    });
+</script>
+
+    
+</body>
+</html>

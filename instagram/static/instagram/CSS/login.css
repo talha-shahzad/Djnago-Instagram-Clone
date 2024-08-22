@@ -1,0 +1,111 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+    margin:0px 20%;
+}
+
+.image-holder{
+    display: flex;
+    flex:50%;
+    justify-content: center;
+}
+
+.fade-in {
+    opacity: 0; 
+    height: auto;
+    transition: opacity 1s ease-in-out; 
+    background-color: black;
+    border: 15px solid;
+    border-radius: 30px;
+    position: absolute; 
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.fade-in.visible {
+    opacity: 1; /* Fade in the image */
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 50%; 
+    margin:0;
+    padding: 0;
+}
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(45, 43, 43, 0.255);
+    padding:2rem 1rem;;
+    margin:1rem 2rem;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inp-fields{
+    width:250px;
+    height: 35px;
+    margin:0.5rem 2rem;
+    border: 1px solid rgba(45, 43, 43, 0.255);
+    background-color: rgba(247, 247, 247, 0.819);
+    border-radius: 5px;
+    padding:5px;
+}
+.inp-fields:checked{
+    border:1px solid  rgba(62, 60, 60, 0.388);
+    
+}
+.sub-btn{
+    background-color: rgba(53, 131, 225, 0.83);
+    width:250px;
+    height: 30px;
+    border: 1px solid rgba(45, 43, 43, 0.255);
+    border-radius: 2px;
+    color:white;
+    border:none;
+}
+.fb-btn{
+    width:250px;
+    height: 30px;
+    margin:0.5rem;
+    border-radius: 2px;
+    color:rgba(8, 8, 155, 0.859);
+    background: none;
+    border:none;
+    font-weight: bold;
+}
+.fp-link{
+    color:rgba(0, 0, 0, 0.632);
+    text-decoration: none;
+    margin:0.5rem 0rem 1rem; ;
+}
+.signup {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    padding: 1rem;
+    border: 1px solid rgba(45, 43, 43, 0.255);
+    width: 80%;
+    box-sizing: border-box;
+}
+@media screen and (max-width: 992px) {
+    .image-holder {
+        display: none;
+    }
+    .login-form {
+        width: 100%;
+    }
+}
