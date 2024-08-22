@@ -20,7 +20,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     bio = models.TextField(blank=True)
     gender = models.CharField(max_length=10, blank=True)
-    profile_pic = models.ImageField(upload_to='profile_pic/', blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pic/', blank=True, default='profile_pic/profile_pic.png')
     status = models.BooleanField(default=False)
     follower = models.ManyToManyField('self', related_name='followers', symmetrical=False)
 

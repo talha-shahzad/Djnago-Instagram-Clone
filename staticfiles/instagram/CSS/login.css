@@ -37,7 +37,7 @@
     margin:0;
     padding: 0;
 }
-.login-form {
+.login {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,6 +45,12 @@
     border: 1px solid rgba(45, 43, 43, 0.255);
     padding:2rem 1rem;;
     margin:1rem 2rem;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .inp-fields{
@@ -54,6 +60,7 @@
     border: 1px solid rgba(45, 43, 43, 0.255);
     background-color: rgba(247, 247, 247, 0.819);
     border-radius: 5px;
+    padding:5px;
 }
 .inp-fields:checked{
     border:1px solid  rgba(62, 60, 60, 0.388);
@@ -63,7 +70,6 @@
     background-color: rgba(53, 131, 225, 0.83);
     width:250px;
     height: 30px;
-    margin:0.5rem;
     border: 1px solid rgba(45, 43, 43, 0.255);
     border-radius: 2px;
     color:white;
@@ -90,7 +96,7 @@
     justify-content: center;
     align-items: center;
     text-align:center;
-    padding: 10px;
+    padding: 1rem;
     border: 1px solid rgba(45, 43, 43, 0.255);
     width: 80%;
     box-sizing: border-box;

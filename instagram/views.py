@@ -37,12 +37,15 @@ def profile(request):
 
 def home(request):
     suggestions = User.objects.exclude(id=request.user.id).exclude(is_superuser=True)[:10]
-    
-
-    print(suggestions)
-    
     return render(request, 'instagram/index.html', {'user': request.user, 'suggestions': suggestions})
 
+def search(request):
+    if request.method == 'GET':
+        query = request.GET.get('search')
+        if query:
+            results = User.objects.filter(username__icontains=query).exclude(id=request.user.id).exclude(is_superuser=True)
+            return render(request, 'instagram/search.html', {'results': results})
+    return render(request, 'instagram/search.html')
 
 @login_required
 def editProfile(request):
