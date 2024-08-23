@@ -60,21 +60,28 @@
                 <h3 class='suggestions-heading'>Suggested for You</h3>
                 {% for suggestion in suggestions %}
                 <div class='suggestion-card'>
-                    <div class='suggestion-profile'>
-                        
+                    
+                    <div class='suggestion-profile'>  
                         <div class='suggestion-profile-pic'>
+                            <a href="{% url 'profile' suggestion.username %}">
                             {% if suggestion.profile_pic %}
                                 <img src="{{ suggestion.profile_pic.url }}" width='90px' class="d-block" alt="{{ suggestion.username }}'s Profile Picture">
                             {% else %}
                                 <img src="{% static 'instagram/Images/profile_pic.png' %}" width='90px' class="d-block" alt="Default Profile Image">
                             {% endif %}
+                            </a>
                         </div>
-                        
                         <div class='suggestion-username'>
                             <p>{{ suggestion.username }}</p>
                         </div>
                         <div class='follow-button'>
-                            <button>Follow</button>
+                            <button class="follow-btn" data-username="{{ suggestion.username }}">
+                                {% if request.user in suggestion.followers.all %}
+                                    Following
+                                {% else %}
+                                    Follow
+                                {% endif %}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -83,4 +90,40 @@
             </div>
         </div>
         </body>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const followButtons = document.querySelectorAll('.follow-btn');
+            
+                followButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const username = this.getAttribute('data-username');
+                        const buttonText = this.innerText.trim();
+            
+                        fetch(`/follow/${username}/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({ action: buttonText })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                            } else {
+                                if (data.action === 'followed') {
+                                    button.innerText = 'Following';
+                                } else {
+                                    button.innerText = 'Follow';
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    });
+                });
+            });
+            </script>
 </html>        

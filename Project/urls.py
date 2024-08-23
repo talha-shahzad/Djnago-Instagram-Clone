@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from instagram import urls
 urlpatterns = [
-    path('',include(urls.urlpatterns)),
+    path('',include(urls.urlpatterns), name='login'),
     path('admin/', admin.site.urls),
 ]

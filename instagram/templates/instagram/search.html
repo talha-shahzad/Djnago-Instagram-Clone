@@ -14,7 +14,7 @@
                 flex:0 0 70%;
                 flex-direction: column;
                 padding:1rem;
-                margin: 0 auto; /* Centers the container horizontally on the page */
+                margin: 0 auto; 
                 width: 90%
             }
             
@@ -29,14 +29,14 @@
             }
             
             .search-bar i {
-                margin-right: 10px; /* Adds space between the icon and the input field */
-                align-self: center; /* Vertically centers the icon */
+                margin-right: 10px; 
+                align-self: center;
             }
             
             .search-bar .search {
-                flex: 1; /* Makes the input field take up all available space */
-                padding: 1rem;
+                flex: 1;
                 border:none;
+                font-size:1.5rem;
                 background-color: inherit;
             }
             .search-bar .search:focus {
@@ -83,6 +83,7 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                width: 100%; /* or any specific width */
             }
             
             .profile-info h3 {
@@ -94,7 +95,10 @@
                 margin: 0;
                 color: #555;
             }
-            
+            .profile-info .follow{
+                align-self:flex-end;
+                justify-self:flex-end;
+            }
         </style>
     </head>
     <body>
@@ -109,18 +113,29 @@
                 </div>
                 <div class='search-results'>
                     {% if results %}
-                        {% for result in results%}
+                        {% for result in results %}
                             <div class='search-result'>
-                                 <div class='profile-pic'>
-                                    {% if result.profile_pic %}
-                                    <img src="{{ result.profile_pic.url }}" alt="Profile Picture">
-                                    {% else %}
-                                     <img src="{% static 'instagram/Images/profile_pic.png' %}" alt="Default Profile Picture">
-                                    {% endif %}
+                                <div class='profile-pic'>
+                                    <a href="{% url 'profile' result.username %}" class="search-result-link">
+                                        {% if result.profile_pic %}
+                                            <img src="{{ result.profile_pic.url }}" alt="Profile Picture">
+                                        {% else %}
+                                            <img src="{% static 'instagram/Images/profile_pic.png' %}" alt="Default Profile Picture">
+                                        {% endif %}
+                                    </a>
                                 </div>
                                 <div class='profile-info'>
-                                    <h3>{{result.username}}</h3>
-                                    <p>{{result.first_name}} {{result.last_name}}</p>
+                                    <h3>{{ result.username }}</h3>
+                                    <p>{{ result.first_name }} {{ result.last_name }}</p>
+                                </div>
+                                <div class='follow'>
+                                    <button class="btn btn-primary follow-btn" data-username="{{ result.username }}">
+                                        {% if request.user in result.followers.all %}
+                                            Following
+                                        {% else %}
+                                            Follow
+                                        {% endif %}
+                                    </button>
                                 </div>
                             </div>
                         {% endfor %}
@@ -131,4 +146,39 @@
             </div>
         </div>
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const followButtons = document.querySelectorAll('.follow-btn');
+        
+            followButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const username = this.getAttribute('data-username');
+                    const buttonText = this.innerText.trim();
+        
+                    fetch(`/follow/${username}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            if (data.action === 'followed') {
+                                button.innerText = 'Following';
+                            } else {
+                                button.innerText = 'Follow';
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+        });
+        </script>
 </html>

@@ -22,10 +22,11 @@ class User(AbstractUser):
     gender = models.CharField(max_length=10, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pic/', blank=True, default='profile_pic/profile_pic.png')
     status = models.BooleanField(default=False)
-    follower = models.ManyToManyField('self', related_name='followers', symmetrical=False)
+    followers = models.ManyToManyField('self', related_name='following', symmetrical=False, blank=True)
 
     def __str__(self):
         return self.username
+
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
