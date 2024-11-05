@@ -58,11 +58,63 @@ def profile(request, username):
     return render(request, 'instagram/profile.html', context)
 
 
+
+from django.utils import timezone
+from story.models import Story 
+from django.db.models import Max
+from post.models import Post
+from django.shortcuts import render
+
+
 @login_required(login_url='login')
 def home(request):
-    suggestions = User.objects.exclude(id=request.user.id).exclude(is_superuser=True)[:10]
-    return render(request, 'instagram/index.html', {'user': request.user, 'suggestions': suggestions})
+    user = request.user
+    
+    # Get the current time
+    now = timezone.now()
 
+    # Fetch the latest story for the current user within the last 24 hours
+    latest_story = Story.objects.filter(user=user, date__gte=now - timezone.timedelta(hours=24)).order_by('-date').first()
+
+    # Get the list of followers
+    followers = user.following.all()  # Assuming 'following' is the related name for the followers field
+
+    # Retrieve stories from followers within the last 24 hours
+    followers_with_stories = followers.filter(
+        story__date__gte=now - timezone.timedelta(hours=24)
+    ).distinct()
+
+    # Annotate the latest story for each follower
+    latest_stories = Story.objects.filter(
+        user__in=followers_with_stories,
+        date__gte=now - timezone.timedelta(hours=24)
+    ).values('user').annotate(latest_date=Max('date')).values('user', 'latest_date')
+
+    # Retrieve the latest story for each follower
+    followers_stories = Story.objects.filter(
+        user__in=[f['user'] for f in latest_stories],
+        date__in=[f['latest_date'] for f in latest_stories]
+    ).order_by('-date')
+
+    # Retrieve posts from the current user and their followers
+    posts = Post.objects.select_related('user').prefetch_related('images').filter(user__in=[user] + list(followers))
+
+    # Exclude the current user from suggestions
+    suggestions = User.objects.exclude(id=request.user.id).exclude(is_superuser=True)[:10]
+
+    context = {
+        'user': user,
+        'latest_story': latest_story,  # Automatically retrieved latest story
+        'followers_stories': followers_stories,
+        'posts': posts,  # Posts from the current user and followers
+        'suggestions': suggestions,
+    }
+
+    return render(request, 'instagram/index.html', context)
+
+
+
+@login_required(login_url='login')
 def search(request):
     if request.method == 'GET':
         query = request.GET.get('search')
@@ -91,6 +143,7 @@ def editProfile(request):
         form = UserProfileForm(instance=user)
 
     return render(request, 'instagram/editProfile.html', {'form': form})
+
 
 
 @login_required

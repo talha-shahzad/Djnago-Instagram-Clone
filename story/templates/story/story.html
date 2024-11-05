@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'story/CSS/story.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>Story Viewer</title>
+    </head>
+    
+<body>
+    <div class="stories">
+        <!-- Current user's story -->
+        <div class='story-image'>
+            <a href="{% url 'latest' %}" class="story-link" 
+            {% if latest_story.image %} data-image-url="{{ latest_story.image.url }}" {% endif %} 
+            data-is-current-user='true'>
+         
+                {% if user.profile_pic %}
+                    <img src="{{ user.profile_pic.url }}" class="d-block" alt="Story Image">
+                {% else %}
+                    <img src="{% static 'instagram/Images/profile_pic.png' %}" class="d-block" alt="Default Story Image">
+                {% endif %}
+            </a>
+            <div class='story-username'>
+                <p>{{ user.username }}</p>
+            </div>
+            <button class="btn-add" onclick="window.location.href='{% url 'addstory' %}'">
+                +
+            </button>
+        </div>
+        <!-- Loop over followers' stories -->
+        {% for story in followers_stories %}
+        <div class='story-image'>
+            <a href="#" class="story-link" {% if story.image.url %} data-image-url="{{ story.image.url }}" {% endif %}>
+                {% if story.user.profile_pic %}
+                    <img src="{{ story.user.profile_pic.url }}" class="d-block" alt="Story Image">
+                {% else %}
+                    <img src="{% static 'instagram/Images/profile_pic.png' %}" class="d-block" alt="Default Story Image">
+                {% endif %}
+            </a>
+            <div class='story-username'>
+                <p>{{ story.user.username }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Full-screen image container -->
+    <div id="fullScreenImage" class="full-screen-image" onclick="hideFullScreenImage()">
+        <img id="fullScreenImageContent" src="" alt="Full Screen Story Image">
+        <div class="button-container">
+            <button id="btn-delete" class="btn-delete" onclick="deleteStory(event)" data-image-url="{{ latest_story.story_id }}">Delete</button>
+        </div>
+    </div>
+
+    <script>
+        function displayFullScreenImage(imageUrl, storyOwner) {
+            var fullScreenImage = document.getElementById("fullScreenImage");
+            var fullScreenImageContent = document.getElementById("fullScreenImageContent");
+            var btnDelete = document.getElementById("btn-delete");
+            
+            fullScreenImageContent.src = imageUrl;
+            fullScreenImage.style.display = "flex"; 
+            
+            if (storyOwner === 'true') {
+                btnDelete.style.display = "block"; // Show delete button
+            } else {
+                btnDelete.style.display = "none"; // Hide delete button
+                
+            }
+        
+            setTimeout(function() {
+                hideFullScreenImage();
+            }, 15000); 
+        }
+        
+        function handleLinkClick(event) {
+            event.preventDefault();  
+            const imageUrl = event.currentTarget.getAttribute('data-image-url');
+            // Check if imageUrl is not empty or null
+            if (imageUrl) {
+                const isCurrentUserStory = event.currentTarget.getAttribute('data-is-current-user');
+                displayFullScreenImage(imageUrl, isCurrentUserStory);
+            }
+        }
+        
+        
+        function hideFullScreenImage() {
+            var fullScreenImage = document.getElementById("fullScreenImage");
+            fullScreenImage.style.display = "none"; 
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all elements with the class 'story-link'
+            const links = document.querySelectorAll('.story-link');
+        
+            // Add click event listener to each link
+            links.forEach(link => {
+                link.addEventListener('click', handleLinkClick);
+            });
+        });
+                
+        function deleteStory(event) {
+            event.preventDefault();
+            const storyId = event.currentTarget.getAttribute('data-image-url');
+            console.log(storyId);  // Check if the storyId is correct
+        
+            fetch(`/story/delete/${storyId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/home'; // Redirect to home page after successful delete
+                } else {
+                    console.error('Failed to delete the story.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+    </script>
+</body>
+</html>

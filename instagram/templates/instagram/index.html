@@ -14,7 +14,7 @@
         <div class='main'>
             {% include 'instagram/sidepanel.html' %}
             <div class='content'>
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                {% comment %} <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
 
                         <div class='story-image'>
@@ -28,8 +28,6 @@
                                 <p>{{ user.username }}</p>
                             </div>
                         </div>
-                        
-                        
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -39,23 +37,10 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+                </div> {% endcomment %}
+                    {% include 'story/story.html' %}
+                    {% include 'post/post.html'%}
                 </div>
-                <div class='post-area  mt-2'>
-                    <div class='post'>
-                        <div class='post-header'>
-                            <div class='profile-image'>
-                                <img src="{% static 'instagram/Images/profile.jpg' %}" alt="Profile Image">
-                            </div>
-                            <div class='username'>
-                                <p>Username</p>
-                            </div>
-                        </div>
-                        <div class='post-image'>
-                            <img src="{% static 'instagram/Images/post.jpg' %}" alt="Post Image">
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class='Suggestions'>
                 <h3 class='suggestions-heading'>Suggested for You</h3>
                 {% for suggestion in suggestions %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load static%}
+<html>
+<head>
+    <title>Comment on Post</title>
+</head>
+<body>
+    <h1>Comment on Post</h1>
+    
+    <h2>Add a Comment</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="comment" rows="4" cols="50" placeholder="Write your comment here..."></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Comments</h2>
+    {% for comment in comments %}
+        <div class="comment">
+            <p><strong>{{ comment.user.username }}</strong>: {{ comment.comment }}</p>
+            {% if comment.user == request.user %}
+                <form method="POST" action="{% url 'delete_comment' comment.comment_id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from .models import User,Post,PostImage,Comment,Like,Story
+from .models import User
 from django import forms
 
 
@@ -78,7 +78,8 @@ class SignupForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['profile_pic', 'bio', 'gender']
+        fields = ['profile_pic', 'bio', 'gender', 'status']
 
     bio = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'cols': 20}))
     gender = forms.ChoiceField(choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
+    status = forms.BooleanField(required=False)

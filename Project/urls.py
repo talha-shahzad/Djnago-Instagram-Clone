@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from instagram import urls
+import instagram.urls
+import story.urls
+import post.urls
+
 urlpatterns = [
-    path('',include(urls.urlpatterns), name='login'),
+    path('',include(instagram.urls), name='login'),
+    path('story/',include(story.urls), name='story'),
+    path('post/',include(post.urls), name='post'),
     path('admin/', admin.site.urls),
 ]

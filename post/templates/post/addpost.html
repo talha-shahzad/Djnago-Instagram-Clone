@@ -1,0 +1,106 @@
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <style>
+        /* CSS for styling the form */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        form {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* CSS for image previews */
+        #imagePreview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create a New Post</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Render form fields individually to avoid duplicating the image field -->
+        {{ form.caption.label_tag }}
+        {{ form.caption }}
+
+        {{ form.location.label_tag }}
+        {{ form.location }}
+
+        <label for="id_images">Upload Images (max 10 files):</label>
+        <input type="file" name="images" id="id_images" multiple accept="image/*">
+
+        <div id="imagePreview"></div>
+
+        <button type="submit">Post</button>
+    </form>
+
+    <script>
+        // JavaScript for image preview
+        document.getElementById('id_images').addEventListener('change', function(event) {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = '';  // Clear previous previews
+
+            const files = event.target.files;
+            if (files) {
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'preview-img';
+                        imagePreview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
