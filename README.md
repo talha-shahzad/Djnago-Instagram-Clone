@@ -1,6 +1,3 @@
-Here’s an updated README for your Django Instagram Clone project, using Django templates for the frontend:
-
----
 
 # Instagram Clone
 
