@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: django-app  # Ensure this label matches the pod's label
+  ports:
+    - protocol: TCP
+      port: 8000       # Port within the cluster
+      targetPort: 8000  # Port on the pod
+      nodePort: 32010   # External port for accessing the service
+  type: NodePort       # Expose the service externally

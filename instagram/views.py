@@ -101,7 +101,7 @@ def home(request):
 
     # Exclude the current user from suggestions
     suggestions = User.objects.exclude(id=request.user.id).exclude(is_superuser=True)[:10]
-
+    print(posts)
     context = {
         'user': user,
         'latest_story': latest_story,  # Automatically retrieved latest story

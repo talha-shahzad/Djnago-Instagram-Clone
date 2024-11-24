@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure--319s9_g4+q4_lzgcvhcsr2x20_tw+%06-ro64ulpabk=6s^9)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 # settings.py
 AUTH_USER_MODEL = 'instagram.User'
@@ -120,20 +121,17 @@ USE_I18N = True
 USE_TZ = True
 
 import os
-# Base directory of your project
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# URL to use when referring to static files located in STATIC_ROOT
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Default static and media paths if not overridden
+STATIC_ROOT = os.getenv('STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+
 STATIC_URL = '/static/'
-
-# Directory where static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-# settings.py
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
